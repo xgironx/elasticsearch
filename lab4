@@ -1,0 +1,284 @@
+GET _search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+GET _search
+GET /
+GET /_cat/indices?v
+GET /_cat/indices
+PUT my_blogs/_doc/1
+{
+  "id": "1",
+  "title": "Better query execution",
+  "category": "Engineering",
+  "date":"July 15, 2015",
+  "author":{
+    "first_name": "Adrian",
+    "last_name": "Grand",
+    "company": "Elastic"
+  }
+}
+PUT my_blogs/_doc/2
+{
+  "id": "2",
+  "title": "The Story of Sense",
+  "date":"May 28, 2015",
+  "author":{
+    "first_name": "Boaz",
+    "last_name": "Leskes"
+  }
+}
+POST my_blogs/_doc/
+{
+  "id": "57",
+  "title": "Phrase Queries: a world without Stopwords",
+  "date":"March 7, 2016",
+  "category": "Engineering",
+  "author":{
+    "first_name": "Gabriel",
+    "last_name": "Moskovicz"
+  }
+}
+GET my_blogs/_doc/1
+POST my_blogs/_doc/57
+{
+  "id": "57",
+  "title": "Phrase Queries: a world without Stopwords",
+  "date":"March 7, 2016",
+  "category": "Engineering",
+  "author":{
+    "first_name": "Gabriel",
+    "last_name": "Moskovicz"
+  }
+}
+GET my_blogs/_doc/57
+DELETE my_blogs/_doc/2
+GET my_blogs/_doc/2
+DELETE my_blogs
+GET my_blogs
+
+as user blogs_user:
+GET blogs*/_search
+GET _cat/indices
+PUT blogs/_doc/1
+{
+  "a": "b"
+}
+delete blogs
+
+#lab4
+GET blogs/_search
+{
+  "query": {
+    "size":1,
+    "match_all": {}
+  }
+}
+GET blogs/_search
+{
+  "size":1,
+   "query": {
+    "match_all": {}
+  }
+}
+GET blogs/_search
+{
+  "size":111,
+   "query": {
+    "match_all": {}
+  }
+}
+GET blogs/_search
+{
+  "_source": {
+    "excludes":["content"]
+  },
+  "size":111,
+   "query": {
+    "match_all": {}
+  }
+}
+GET blogs/_search
+{
+  "_source": {
+    "includes":["author","title"]
+  },
+  "size":111,
+   "query": {
+    "match_all": {}
+  }
+}
+GET blogs/_search
+{
+  "_source": ["author","title"],
+  "size":111,
+   "query": {
+     "range":{
+       "publish_date":{
+         "gte":"2017-05-01",
+         "lte":"2017-05-31"
+       }
+     }
+  }
+}
+GET blogs/_search
+{
+  "_source": ["author","title"],
+  "size":1,
+   "query": {
+       "match":{
+         "title":{
+           "query":"elastic stack",
+         "operator":"and"
+       }
+     }
+  }
+}
+GET blogs/_search
+{
+  "_source": ["author","title","content"],
+  "size":1,
+   "query": {
+       "match":{
+         "content":{
+           "query":"search"
+           }
+     }
+  }
+}
+GET blogs/_search
+{
+  "_source": ["author","title","content"],
+  "size":1,
+   "query": {
+       "match":{
+         "content":"search"
+           }
+     }
+  }
+GET blogs/_search
+{
+  "_source": ["author","title","content"],
+  "size":1,
+   "query": {
+       "match":{
+         "content":"search analytics"
+        }
+     }
+  }
+GET blogs/_search
+{
+  "_source": ["author","title","content"],
+  "size":3,
+   "query": {
+       "match_phrase":{
+         "content":{
+           "query":"search analytics"
+        }
+       }
+     }
+  }
+GET blogs/_search
+{
+  "_source": ["author","title","content"],
+  "size":3,
+   "query": {
+       "match_phrase":{
+         "content":"search analytics"
+        }
+       }
+     }
+GET blogs/_search
+{
+  "_source": ["author","title","content"],
+  "size":3,
+   "query": {
+       "match_phrase":{
+         "content":{
+           "query":"search analytics",
+           "slop":1
+        }
+       }
+     }
+  }
+GET blogs/_search
+{
+  "_source": ["author","title","content"],
+   "query": {
+       "match":{
+         "content":"performance optimizations improvements"
+        }
+       }
+     }
+GET blogs/_search
+{
+  "_source": ["title","_score"],
+  "query":{
+       "match":{
+         "content":{
+           "query":"performance optimizations improvements",
+           "minimum_should_match":2
+       }
+     }
+}
+}
+GET blogs/_search
+{
+  "_source": [
+    "title",
+    "_score"
+  ],
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "content": {
+              "query": "performance optimizations improvements",
+              "minimum_should_match": 2
+            }
+          }
+        }
+      ],
+      "must_not": {
+        "match": {
+          "title": "release releases released"
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
